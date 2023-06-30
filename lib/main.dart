@@ -37,11 +37,20 @@ class MyHomePage extends StatefulWidget {
 
 
 Future<String> get() async {
-  const domain = '';//ここに'http://0.0.0.0:0000'の形でサーバのアドレスとポート番号を記述する
+  const domain = 'http://10.30.95.84:8080/ChatGPT';//ここに'http://0.0.0.0:0000'の形でサーバのアドレスとポート番号を記述する
   var url = Uri.parse(domain);
-  var response = await http.get(url);
+  Map<String, dynamic> pass = {
+    'password': '1234',
+    'body': {
+       "model": "gpt-3.5-turbo",
+       "messages": [
+         {"role": "user", "content": "こんにちは"}
+       ]
+    }
+  };
+  var response = await http.post(url, body: jsonEncode(pass));
   Map<String, dynamic> map = jsonDecode(response.body);
-  String message = map['message'];
+  String message = map['message'].toString();
   return message;
 }
 
